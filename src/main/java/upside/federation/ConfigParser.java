@@ -22,9 +22,13 @@ public class ConfigParser extends AbstractParser {
 
     public Config parse() {
         String baseUrl = root().getAttribute("base-url");
-        Map<String, URL> originSites = new HashMap<String, URL>();
-        Set<FederatedSite> federatedSites = new HashSet<FederatedSite>();
+        Map<String, URL> originSites = parseOriginSites();
+        Set<FederatedSite> federatedSites = parseFederatedSites();
+        return new Config(baseUrl, originSites, federatedSites);
+    }
 
+    private Map<String, URL> parseOriginSites() {
+        Map<String, URL> originSites = new HashMap<String, URL>();
         List<Element> siteElems = getChildElements(root(), "site");
         for (Element se : siteElems) {
             try {
@@ -33,39 +37,54 @@ public class ConfigParser extends AbstractParser {
                 throw Exceptions.re(e);
             }
         }
+        return originSites;
+    }
 
-        for (Element fsElem : getChildElements(root(), "federated-site")) {
-            String name = fsElem.getAttribute("name");
-            String description = getChildElement(fsElem, "description").getTextContent();
-            Set<FederatedCategory> categories = new HashSet<FederatedCategory>();
+    private Set<FederatedSite> parseFederatedSites() {
+        Set<FederatedSite> federatedSites = new HashSet<FederatedSite>();
+        for (Element fsElem : getChildElements(root(), "federated-site"))
+            federatedSites.add(parseFederatedSite(fsElem));
+        return federatedSites;
+    }
 
-            for (Element fcElem : getChildElements(fsElem, "category")) {
-                String catName = fcElem.getAttribute("name");
-                String catDescription = getChildElement(fcElem, "description").getTextContent();
+    private FederatedSite parseFederatedSite(Element fsElem) {
+        String name = fsElem.getAttribute("name");
+        String description = getChildElement(fsElem, "description").getTextContent();
+        Set<FederatedCategory> categories = parseFederatedCategories(fsElem);
+        return new FederatedSite(name, description, categories);
+    }
 
-                Set<Include> includes = new HashSet<Include>();
-                for (Element incElem : getChildElements(fcElem, "include")) {
-                    String site = incElem.getAttribute("site");
-                    if (incElem.hasAttribute("feature")) {
-                        String version = incElem.hasAttribute("version")
-                            ? incElem.getAttribute("version")
-                            : null;
-                        includes.add(
-                            Include.createFeatureInclude(
-                                site, incElem.getAttribute("feature"), version));
-                    } else if (incElem.hasAttribute("category")) {
-                        includes.add(
-                            Include.createCategoryInclude(
-                                site, incElem.getAttribute("category")));
-                    } else
-                        includes.add(Include.createSiteInclude(site));
-                }
-                categories.add(new FederatedCategory(catName, catDescription, includes));
-            }
+    private Set<FederatedCategory> parseFederatedCategories(Element fsElem) {
+        Set<FederatedCategory> categories = new HashSet<FederatedCategory>();
+        for (Element fcElem : getChildElements(fsElem, "category"))
+            categories.add(parseFederatedCategory(fcElem));
+        return categories;
+    }
 
-            federatedSites.add(new FederatedSite(name, description, categories));
-        }
+    private FederatedCategory parseFederatedCategory(Element fcElem) {
+        String catName = fcElem.getAttribute("name");
+        String catDescription = getChildElement(fcElem, "description").getTextContent();
+        Set<Include> includes = parseIncludes(fcElem);
+        return new FederatedCategory(catName, catDescription, includes);
+    }
 
-        return new Config(baseUrl, originSites, federatedSites);
+    private Set<Include> parseIncludes(Element fcElem) {
+        Set<Include> includes = new HashSet<Include>();
+        for (Element incElem : getChildElements(fcElem, "include"))
+            includes.add(parseInclude(incElem));
+        return includes;
+    }
+
+    private Include parseInclude(Element incElem) {
+        String site = incElem.getAttribute("site");
+        if (incElem.hasAttribute("feature")) {
+            String version = incElem.hasAttribute("version")
+                ? incElem.getAttribute("version")
+                : null;
+            return Include.createFeatureInclude(site, incElem.getAttribute("feature"), version);
+        } else if (incElem.hasAttribute("category"))
+            return Include.createCategoryInclude(site, incElem.getAttribute("category"));
+        else
+            return Include.createSiteInclude(site);
     }
 }
