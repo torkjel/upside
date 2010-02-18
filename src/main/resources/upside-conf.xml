@@ -1,0 +1,47 @@
+<upside base-url="http://localhost:7080/upside/">
+
+  <site name="andrei" url="http://andrei.gmxhome.de/eclipse/"/>
+  <site name="quantumdb" url="http://quantum.sourceforge.net/update-site/"/>
+
+  <federated-site name="main">
+    <description>Main site</description>
+
+    <category name="andrei">
+      <description>All Andrei's stuff</description>
+      <include site="andrei"/>
+    </category>
+
+    <category name="quantumdb">
+      <description>Quantum DB</description>
+      <include site="quantumdb"/>
+    </category>
+
+    <category name="old">
+      <description>Andrei's old stuff</description>
+      <include site="andrei" category="Eclipse 3.1"/>
+      <include site="andrei" category="Eclipse 3.2"/>
+      <include site="andrei" category="Eclipse 3.3"/>
+    </category>
+
+
+    <!--
+        TODO: include <include> support at top level.
+        Additionally, site-import at top-level should have keep-categories attribute.
+    -->
+
+    <include site="andrei"/>
+    <include site="andrei" keep-categories="true"/>
+    <include site="andrei" category="BETA" keep-categories="true"/>
+
+
+  </federated-site>
+
+  <federated-site name="test">
+    <description>Test site</description>
+    <category name="test">
+        <description>Test category</description>
+        <include site="andrei"/>
+    </category>
+  </federated-site>
+
+</upside>

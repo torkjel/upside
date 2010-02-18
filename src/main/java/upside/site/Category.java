@@ -1,0 +1,38 @@
+package upside.site;
+
+public class Category {
+    private String name;
+    private String label;
+    private String description;
+
+    public Category(String name, String label, String description) {
+        this.name = name;
+        this.label = label;
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (o instanceof Category)
+            return ((Category)o).getName().equals(getName());
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+}
