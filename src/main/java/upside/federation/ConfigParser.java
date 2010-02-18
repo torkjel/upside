@@ -51,7 +51,8 @@ public class ConfigParser extends AbstractParser {
         String name = fsElem.getAttribute("name");
         String description = getChildElement(fsElem, "description").getTextContent();
         Set<FederatedCategory> categories = parseFederatedCategories(fsElem);
-        return new FederatedSite(name, description, categories);
+        Set<Include> includes = parseIncludes(fsElem);
+        return new FederatedSite(name, description, categories, includes);
     }
 
     private Set<FederatedCategory> parseFederatedCategories(Element fsElem) {
@@ -77,14 +78,15 @@ public class ConfigParser extends AbstractParser {
 
     private Include parseInclude(Element incElem) {
         String site = incElem.getAttribute("site");
+        boolean keepCategories = "true".equals(incElem.getAttribute("keep-categories"));
         if (incElem.hasAttribute("feature")) {
             String version = incElem.hasAttribute("version")
                 ? incElem.getAttribute("version")
                 : null;
-            return Include.createFeatureInclude(site, incElem.getAttribute("feature"), version);
+            return Include.newInclude(site, keepCategories).feature(incElem.getAttribute("feature"), version);
         } else if (incElem.hasAttribute("category"))
-            return Include.createCategoryInclude(site, incElem.getAttribute("category"));
+            return Include.newInclude(site, keepCategories).category(incElem.getAttribute("category"));
         else
-            return Include.createSiteInclude(site);
+            return Include.newInclude(site, keepCategories).site();
     }
 }

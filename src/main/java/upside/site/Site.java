@@ -77,6 +77,12 @@ public class Site {
         return new Site(description, categories, features, archives);
     }
 
+    public Site withDescription(String url, String description) {
+        return new Site(
+            new Description(url, description),
+            getCategories(), getFeatures(), getArchives());
+    }
+
     public static Site merge(String newOrigin, Site ... sites) {
         try {
             return merge(new URL(newOrigin), sites);
@@ -118,8 +124,8 @@ public class Site {
             xml.attr("id", f.getId());
             xml.attr("patch", f.getPatch());
             xml.attr("version", f.getVersion());
-            for (Category c : f.getCategories())
-                xml.open("category").attr("name", c.getName()).close();
+            for (String cat : f.getCategories())
+                xml.open("category").attr("name", cat).close();
             xml.close();
         }
         for (Archive a : archives)

@@ -35,4 +35,12 @@ public class Category {
     public int hashCode() {
         return getName().hashCode();
     }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + ":[" +
+            "name:" + name + ", " +
+            "label:" + label + ", " +
+            "description:" + description + "]";
+    }
 }
