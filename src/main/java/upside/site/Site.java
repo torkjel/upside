@@ -27,6 +27,10 @@ public class Site {
         this.archives = new HashSet<Archive>(archives);
     }
 
+    public Description getDescription() {
+        return description;
+    }
+
     public Set<Archive> getArchives() {
         return new HashSet<Archive>(archives);
     }
@@ -42,6 +46,12 @@ public class Site {
         return null;
     }
 
+    public Feature getFeature(String url) {
+        for (Feature f : getFeatures())
+            if (f.getUrl().equals(url))
+                return f;
+        return null;
+    }
 
     public Set<Feature> getFeatures() {
         return new HashSet<Feature>(features);

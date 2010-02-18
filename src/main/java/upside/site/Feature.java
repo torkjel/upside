@@ -2,7 +2,6 @@ package upside.site;
 
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,10 +13,6 @@ public class Feature {
     private String version;
     private boolean patch = false;
     private Set<String> categories = new HashSet<String>();
-
-    public Feature(String url, String id, String version, boolean patch, Category category) {
-        this(url, id, version, patch, Collections.singletonList(category));
-    }
 
     public Feature(String url, String id, String version, boolean patch, Collection<Category> categories) {
         this(url, id, version, patch);

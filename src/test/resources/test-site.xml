@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <description url="http://foo.bar/">
+    The Foo-Bar update site
+   </description>
+
+   <feature url="features/foo_1.0.jar" id="foo" version="1.0"/>
+
+   <feature url="features/bar_1.1.jar" id="bar" version="1.1">
+      <category name="xyzzy"/>
+   </feature>
+
+   <feature url="features/zoo_1.1.jar" id="zoo" patch="true" version="1.2">
+      <category name="xyzzy"/>
+      <category name="wizzy"/>
+   </feature>
+
+   <archive path="plugins/foo_1.0.jar" url="http://fo.bar/plugins/foo_1.0.jar"/>
+   <archive path="plugins/bar_1.1.jar" url="http://fo.bar/plugins/bar_1.1.jar"/>
+   <archive path="plugins/zoo_1.2.jar" url="http://fo.bar/plugins/foo_1.2.jar"/>
+
+   <category-def name="xyzzy" label="Xyzzy plugins">
+      <description>
+        This is the Xyzzy plugins
+      </description>
+   </category-def>
+
+   <category-def name="wizzy" label="Wizzy plugins">
+      <description>
+        This is thw Wizzy plugins
+      </description>
+   </category-def>
+
+   <category-def name="kizzy" label="Kizzy plugins"/>
+
+</site>
