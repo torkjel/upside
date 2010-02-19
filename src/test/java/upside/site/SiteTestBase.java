@@ -7,11 +7,18 @@ public abstract class SiteTestBase {
     protected static final String URL = "http://foo.bar/";
 
     private Site site;
+    private Site site2;
 
     protected synchronized Site loadSite() {
-        return site == null
-            ? site = Site.load(getClass().getResource("/test-site.xml"))
-            : site;
+        return site == null ? site = loadSite("/test-site.xml") : site;
+    }
+
+    protected Site loadOtherSite() {
+        return site2 == null ? site2 = loadSite("/test-site2.xml") : site2;
+    }
+
+    private Site loadSite(String resource) {
+        return Site.load(getClass().getResource(resource));
     }
 
     protected Category cat(String name) {

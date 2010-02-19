@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <description url="http://znoof.naff/">
+    The Znoof-Naff update site
+   </description>
+
+   <feature url="features/znoof_2.0.jar" id="znoof" version="2.0">
+      <category name="naff"/>
+   </feature>
+
+   <feature url="features/bar_1.1.jar" id="bar" version="1.1">
+      <category name="naff"/>
+      <category name="xyzzy"/>
+   </feature>
+
+   <archive path="plugins/foo_1.0.jar" url="plugins/foo_1.0.jar"/>
+   <archive path="plugins/znoof_2.0.jar" url="plugins/znoof_2.0.jar"/>
+
+   <category-def name="naff" label="Naff plugins">
+      <description>
+        This is the Naff plugins
+      </description>
+   </category-def>
+
+   <category-def name="xyzzy" label="Xyzzy plugins"/>
+
+</site>
