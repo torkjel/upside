@@ -1,0 +1,87 @@
+<?xml encoding="UTF-8"?>
+
+<!-- The upside element defines the configuration of an Upside instance.
+
+    base-url    - the base url of the update sites served by this Upside
+                  instance. The servlet container running the Upside instance
+                  must be separately configured to expose Upside on this url.
+                  E.g "http://mysite.example.com/"
+-->
+<!ELEMENT upside (site+, federated-site+)>
+<!ATTLIST upside
+    base-url        CDATA #REQUIRED
+>
+
+<!-- The site element lists an external update site from which features can be
+     included in a federated site.
+
+    name    - name of the site. This is used by Include tags to refer to a
+              site.
+    url     - the url to a site. This must point to the base directory of
+              the site. E.g. "http://foo.bar/update-site/"
+-->
+<!ELEMENT site EMPTY>
+<!ATTLIST site
+    name            CDATA #REQUIRED
+    url             CDATA #REQUIRED
+>
+
+<!-- The federated-site defines a "virtual" update site, composed of features
+     from one or more external update sites. These are the update sites which
+     are served by Upside.
+
+    name    - the name of the federated site. This is used to construct the
+              site's url. The url of the federated site will be a combination
+              of this name and the base-url. E.g: If name is "updates", the
+              full url of the site will be "http://mysite.example.com/updates".
+-->
+<!ELEMENT federated-site (description?, (category | include)+)>
+<!ATTLIST federated-site
+    name            CDATA #REQUIRED
+>
+
+<!-- A textual description of a federated site or a category in a federated
+     site.
+-->
+<!ELEMENT description (#PCDATA)>
+
+<!-- The category element defines a category of features in a federated site.
+
+    name    - the name of the category. This will be the name and label shown
+              in the Eclipse update manager.
+-->
+<!ELEMENT category (description?, include+)>
+<!ATTLIST category
+    name            CDATA #REQUIRED
+>
+
+<!-- The include element specifies a set of features to include in a
+     federated site. These features can be included directly in a site, or in
+     the category of a site. The element comes in three varieties
+     1: if only site is defined it will match all features in the specified
+        external site
+     2: if site and category is defined it will match all features in the
+        given category of the external site
+     3: if site and feature (an optionally version) is defined it will match
+        that specific feature of the external site. The version attribute can
+        be used to restrict matching to a specific version of the feature, if
+        there are several. TODO: specify version wildcards...
+
+    site            - the name of an external site
+    category        - the name of a category in the external site
+    feature         - the name of a category in the external site
+    version         - the version of a feature in the external site.
+    keep-categories - when including a feature from an external site, all the
+                      categories that feature is a member of can also be
+                      included automatically by setting this to "true". Note
+                      that this does not cause other features in those
+                      categories to be included.
+-->
+<!ELEMENT include EMPTY>
+<!ATTLIST include
+    site            CDATA #REQUIRED
+    category        CDATA #IMPLIED
+    feature         CDATA #IMPLIED
+    version         CDATA #IMPLIED
+    keep-categories CDATA "false"
+>
