@@ -35,6 +35,13 @@ public class Site {
         return new HashSet<Archive>(archives);
     }
 
+    public Archive getArchive(String path) {
+        for (Archive a : getArchives())
+            if (a.getPath().equals(path))
+                return a;
+        return null;
+    }
+
     public Set<Category> getCategories() {
         return new HashSet<Category>(categories);
     }
@@ -82,8 +89,9 @@ public class Site {
         for (Feature f : this.features)
             features.add(f.withAbsoluteUrl(origin));
         Set<Archive> archives = new HashSet<Archive>();
-        for (Archive a : this.archives)
-            archives.add(a.withAbsoluteUrl(origin));
+        for (Archive a : this.archives) {
+            archives.add(a.hasAbsoluteUrl() ? a.withAbsoluteUrl(origin) : a);
+        }
         return new Site(description, categories, features, archives);
     }
 

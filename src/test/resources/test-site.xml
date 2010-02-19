@@ -16,9 +16,10 @@
       <category name="wizzy"/>
    </feature>
 
-   <archive path="plugins/foo_1.0.jar" url="http://fo.bar/plugins/foo_1.0.jar"/>
-   <archive path="plugins/bar_1.1.jar" url="http://fo.bar/plugins/bar_1.1.jar"/>
-   <archive path="plugins/zoo_1.2.jar" url="http://fo.bar/plugins/foo_1.2.jar"/>
+   <archive path="plugins/foo_1.0.jar" url="http://foo.bar/plugins/foo_1.0.jar"/>
+   <archive path="plugins/bar_1.1.jar" url="http://foo.bar/plugins/bar_1.1.jar"/>
+   <archive path="plugins/zoo_1.2.jar" url="http://foo.bar/plugins/foo_1.2.jar"/>
+   <archive path="plugins/noo_1.3.jar" url="plugins/noo_1.2.jar"/>
 
    <category-def name="xyzzy" label="Xyzzy plugins">
       <description>

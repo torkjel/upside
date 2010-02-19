@@ -17,10 +17,13 @@ public final class Utils {
         }
     }
 
+    public static boolean isAbsolute(String path) {
+        return URI.create(path).isAbsolute();
+    }
+
     public static String absoluteUrl(URL base, String path) {
-        URI uri = URI.create(path);
-        if (uri.isAbsolute())
-            return uri.toString();
+        if (isAbsolute(path))
+            return path;
         else
             try {
                 return new URI(

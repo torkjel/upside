@@ -15,6 +15,8 @@ public class Archive {
     }
 
     public Archive withAbsoluteUrl(URL base) {
+        if (hasAbsoluteUrl())
+            throw new IllegalStateException("URL is already absolute");
         return new Archive(path, Utils.absoluteUrl(base, url));
     }
 
@@ -24,6 +26,10 @@ public class Archive {
 
     public String getUrl() {
         return url;
+    }
+
+    public boolean hasAbsoluteUrl() {
+        return Utils.isAbsolute(url);
     }
 
     public boolean equals(Object o) {
