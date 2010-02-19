@@ -7,14 +7,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.*;
 
 public class FeatureTest extends SiteTestBase {
 
+    private Site s = loadSite();
+
     @Test
     public void testParse() {
-        Site site = loadSite();
-        Set<Feature> features = site.getFeatures();
+        Set<Feature> features = s.getFeatures();
         assertEquals(3, features.size());
         int checkSum = 0;
         for (Feature f : features) {
@@ -37,6 +41,22 @@ public class FeatureTest extends SiteTestBase {
             }
         }
         assertEquals(7, checkSum);
+    }
+
+    @Test
+    public void testGetFeature() {
+        assertEquals("foo", s.getFeature("features/foo_1.0.jar").getId());
+        assertNull(s.getFeature("nothing-here"));
+    }
+
+    @Test
+    public void testGetFeaturesIn() {
+        Set<Feature> xy = s.getFeaturesIn(s.getCategory("xyzzy"));
+        assertEquals(2, xy.size());
+        assertTrue(xy.contains(s.getFeature("features/bar_1.1.jar")));
+        assertTrue(xy.contains(s.getFeature("features/zoo_1.2.jar")));
+
+        assertTrue(s.getFeaturesIn(s.getCategory("kizzy")).isEmpty());
     }
 
     @Test
@@ -95,8 +115,7 @@ public class FeatureTest extends SiteTestBase {
 
     @Test
     public void testToString() {
-        assertNotNull(
-            loadSite().getFeature("features/zoo_1.1.jar").toString());
+        assertNotNull(s.getFeature("features/zoo_1.2.jar").toString());
     }
 
 }

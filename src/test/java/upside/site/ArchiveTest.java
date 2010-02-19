@@ -24,6 +24,12 @@ public class ArchiveTest extends SiteTestBase {
     }
 
     @Test
+    public void testGetArchive() {
+        assertEquals(FOO_ARCH, s.getArchive(FOO_ARCH).getPath());
+        assertNull(s.getArchive("nothing-here"));
+    }
+
+    @Test
     public void testAbsoluteUrl() throws MalformedURLException {
         Archive a = s.getArchive(FOO_ARCH);
         URL url = new URL(URL);

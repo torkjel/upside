@@ -2,12 +2,12 @@ package upside.site;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import upside.utils.Exceptions;
 import upside.utils.XmlBuilder;
 
 public class Site {
@@ -74,13 +74,15 @@ public class Site {
 
     public static Site load(URL url) {
         try {
-            return load(url, new URL(url, SITEXML).openStream());
+            if (url.getPath().endsWith("/"))
+                url = new URL(url, SITEXML);
+            return load(url.openStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static Site load(URL origin, InputStream in) {
+    public static Site load(InputStream in) {
         return new SiteParser(in).parse();
     }
 
@@ -90,7 +92,7 @@ public class Site {
             features.add(f.withAbsoluteUrl(origin));
         Set<Archive> archives = new HashSet<Archive>();
         for (Archive a : this.archives) {
-            archives.add(a.hasAbsoluteUrl() ? a.withAbsoluteUrl(origin) : a);
+            archives.add(a.hasAbsoluteUrl() ? a : a.withAbsoluteUrl(origin));
         }
         return new Site(description, categories, features, archives);
     }
@@ -102,37 +104,37 @@ public class Site {
     }
 
     public static Site merge(String newOrigin, Site ... sites) {
-        try {
-            return merge(new URL(newOrigin), sites);
-        } catch (MalformedURLException e) {
-            throw Exceptions.re(e);
-        }
-    }
-
-    public static Site merge(URL newOrigin, Site ... sites) {
         StringBuilder sb = new StringBuilder("Merged sites:\n ");
         Set<Category> categories = new HashSet<Category>();
-        Set<Feature> features = new HashSet<Feature>();
+        Map<String, Feature> features = new HashMap<String, Feature>();
         Set<Archive> archives = new HashSet<Archive>();
         for (Site s : sites) {
             if (s == null) continue;
-            String siteUrl = s.description.getUrl().toString();
+            String siteUrl = s.description.getUrl();
             sb.append(siteUrl + "\n");
-            // TODO: handle duplicates!
             categories.addAll(s.categories);
-            features.addAll(s.features);
             archives.addAll(s.archives);
+            for (Feature f : s.features) {
+                String url = f.getUrl();
+                if (!features.containsKey(url))
+                    features.put(url, f);
+                else {
+                    // if feature is already present, merge its categories
+                    Feature feature = features.get(url);
+                    features.put(url, feature.withCategories(f.getCategories()));
+                }
+            }
         }
         return new Site(
             new Description(newOrigin, sb.toString()),
-            categories, features, archives);
+            categories, new HashSet<Feature>(features.values()), archives);
     }
 
     public String toString() {
         XmlBuilder xml = new XmlBuilder();
         xml.open("site");
         xml.open("description");
-        xml.attr("url", description.getUrl().toString());
+        xml.attr("url", description.getUrl());
         if (description.getDescription() != null)
             xml.text(description.getDescription());
         xml.close();
@@ -156,5 +158,23 @@ public class Site {
         }
         xml.close();
         return xml.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        else if (o instanceof Site) {
+            Site s = (Site)o;
+            return s.getDescription().equals(getDescription())
+                && s.getArchives().equals(getArchives())
+                && s.getCategories().equals(getCategories())
+                && s.getFeatures().equals(getFeatures());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getDescription().hashCode();
     }
 }

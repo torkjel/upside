@@ -26,9 +26,8 @@ public class Category {
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        if (o instanceof Category)
-            return ((Category)o).getName().equals(getName());
-        return false;
+        return (o instanceof Category)
+            && ((Category)o).getName().equals(getName());
     }
 
     @Override
