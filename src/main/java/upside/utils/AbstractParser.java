@@ -5,12 +5,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public abstract class AbstractParser {
 
@@ -18,7 +22,9 @@ public abstract class AbstractParser {
 
     protected AbstractParser(InputStream in) {
         try {
-            this.doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            builder.setEntityResolver(new DTDResolver());
+            this.doc = builder.parse(in);
         } catch (Exception e) {
             throw Exceptions.re(e);
         } finally {
@@ -69,4 +75,18 @@ public abstract class AbstractParser {
         }
     }
 
+    private class DTDResolver implements EntityResolver {
+
+        @Override
+        public InputSource resolveEntity(String publicId, String systemId)
+                throws SAXException, IOException {
+            String id = systemId != null ? systemId : publicId;
+            if (id == null) return null;
+            if (id.contains("/") && !id.endsWith("/"))
+                id = id.substring(id.lastIndexOf("/"));
+            System.out.println(id);
+            return new InputSource(getClass().getResourceAsStream(id));
+        }
+
+    }
 }

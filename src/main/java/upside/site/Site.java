@@ -2,6 +2,7 @@ package upside.site;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -72,10 +73,19 @@ public class Site {
         return featuresInCat;
     }
 
+    public static URL urlToSiteXml(URL base) {
+        if (base.getPath().endsWith("/"))
+            try {
+                base = new URL(base, SITEXML);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        return base;
+    }
+
     public static Site load(URL url) {
+        url = urlToSiteXml(url);
         try {
-            if (url.getPath().endsWith("/"))
-                url = new URL(url, SITEXML);
             return load(url.openStream());
         } catch (IOException e) {
             throw new RuntimeException(e);

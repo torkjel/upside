@@ -1,5 +1,7 @@
 package upside.site;
 
+import upside.utils.Utils;
+
 public class Description {
     private String url;
     private String description;
@@ -22,8 +24,8 @@ public class Description {
         if (o == this) return true;
         else if (o instanceof Description) {
             Description d = (Description)o;
-            return eq(d.getDescription(), getDescription())
-                && eq(d.getUrl(), getUrl());
+            return Utils.eq(d.getDescription(), getDescription())
+                && Utils.eq(d.getUrl(), getUrl());
         }
         return false;
     }
@@ -31,9 +33,5 @@ public class Description {
     @Override
     public int hashCode() {
         return getUrl() != null ? getUrl().hashCode() : super.hashCode();
-    }
-
-    private boolean eq(Object o1, Object o2) {
-        return (o1 != null && o1.equals(o2)) || (o1 == null && o2 == null);
     }
 }

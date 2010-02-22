@@ -13,15 +13,7 @@ import upside.site.SiteLoader;
 
 public class Federator {
 
-    private SiteLoader loader;
-    private Config config;
-
-    public Federator(SiteLoader siteLoader, Config config) {
-        this.loader = siteLoader;
-        this.config = config;
-    }
-
-    public Site federateSites(String name) {
+    public Site federateSites(String name, SiteLoader loader, Config config) {
 
         FederatedSite fs = config.getFederatedSite(name);
         if (fs == null)

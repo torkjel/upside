@@ -7,11 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import upside.federation.Config;
-import upside.federation.ConfigParser;
-import upside.federation.Federator;
+import upside.federation.FederationManager;
 import upside.site.Site;
-import upside.site.SiteLoader;
 import upside.utils.Exceptions;
 
 public class DispatcherServlet extends HttpServlet {
@@ -42,12 +39,9 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void doSite(String path, OutputStream out) {
-        Config config = new ConfigParser(getClass().getResourceAsStream("/upside-conf.xml")).parse();
-        SiteLoader loader = new SiteLoader();
-        Federator federator = new Federator(loader, config);
-
         String siteName = getSiteName(path);
-        Site merged = federator.federateSites(siteName);
+        Site merged = FederationManager.getinstance().getFederatedSite(siteName);
+
         if (merged == null)
             throw new IllegalArgumentException("Site not found: " + siteName);
         try {
