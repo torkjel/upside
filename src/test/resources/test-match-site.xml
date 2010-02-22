@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description url="http://foo.bar/"/>
+
+   <feature url="1" id="foo" version="1.0"/>
+
+   <feature url="2" id="bar" version="1.1">
+      <category name="barc"/>
+   </feature>
+
+   <feature url="3" id="zoo" patch="true" version="1.2">
+      <category name="barc"/>
+      <category name="wizzy"/>
+   </feature>
+
+   <category-def name="barc" label="Xyzzy plugins"/>
+   <category-def name="wizzy" label="Wizzy plugins"/>
+   <category-def name="kizzy" label="Kizzy plugins"/>
+
+</site>

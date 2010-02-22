@@ -36,10 +36,6 @@ public abstract class AbstractParser {
         }
     }
 
-    protected Document doc() {
-        return doc;
-    }
-
     protected Element root() {
         return doc.getDocumentElement();
     }
@@ -61,18 +57,6 @@ public abstract class AbstractParser {
             }
         }
         return children;
-    }
-
-    protected Element getSingletonElement(String name) {
-        NodeList nl = doc.getElementsByTagName(name);
-        switch (nl.getLength()) {
-        case 1:
-            return (Element)nl.item(0);
-        case 0:
-            return null;
-        default:
-            throw new IllegalStateException("Not a singleton element: " + name);
-        }
     }
 
     private class DTDResolver implements EntityResolver {

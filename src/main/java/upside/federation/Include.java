@@ -28,19 +28,17 @@ abstract class Include {
     @Override
     public abstract String toString();
 
-    public abstract Set<Feature> match(String siteName, Site site);
+    public abstract Set<Feature> match(Site site);
 
-    private static class SiteInclude extends Include {
+    public static class SiteInclude extends Include {
 
-        public SiteInclude(String site, boolean keepCategories) {
+        private SiteInclude(String site, boolean keepCategories) {
             super(site, keepCategories);
         }
 
         @Override
-        public Set<Feature> match(String siteName, Site site) {
-            return getSite().equals(siteName)
-                ? site.getFeatures()
-                : new HashSet<Feature>();
+        public Set<Feature> match(Site site) {
+            return site.getFeatures();
         }
 
         @Override
@@ -52,21 +50,19 @@ abstract class Include {
         }
     }
 
-    private static class FeatureInclude extends Include {
+    public static class FeatureInclude extends Include {
         private String feature;
         private String version;
 
-        FeatureInclude(String site, boolean keepCategories, String feature, String version) {
+        private FeatureInclude(String site, boolean keepCategories, String feature, String version) {
             super(site, keepCategories);
             this.feature = feature;
             this.version = version;
         }
 
         @Override
-        public Set<Feature> match(String siteName, Site site) {
+        public Set<Feature> match(Site site) {
             Set<Feature> matching = new HashSet<Feature>();
-            if (!siteName.equals(getSite()))
-                return matching;
             for (Feature f : site.getFeatures())
                 // TODO: proper version matching, including wildcard support.
                 if (f.getId().equals(feature) &&
@@ -83,9 +79,18 @@ abstract class Include {
                 "feature:" + feature + ", " +
                 "version:" + version + "]";
         }
+
+        public String getFeature() {
+            return feature;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
     }
 
-    private static class CategoryInclude extends Include {
+    public static class CategoryInclude extends Include {
         private String category;
 
         private CategoryInclude(String site, boolean keepCategories, String category) {
@@ -94,10 +99,8 @@ abstract class Include {
         }
 
         @Override
-        public Set<Feature> match(String siteName, Site site) {
+        public Set<Feature> match(Site site) {
             Set<Feature> matching = new HashSet<Feature>();
-            if (!siteName.equals(getSite()))
-                return matching;
             Category cat = site.getCategory(category);
             if (cat == null)
                 return matching;
@@ -114,10 +117,10 @@ abstract class Include {
                 "keekCategories:" + getKeepCategories() + ", " +
                 "category:" + category + "]";
         }
-    }
 
-    public static IncludeBuilder newInclude(String name) {
-        return newInclude(name, false);
+        public String getCategory() {
+            return category;
+        }
     }
 
     public static IncludeBuilder newInclude(String name, boolean keepCategories) {

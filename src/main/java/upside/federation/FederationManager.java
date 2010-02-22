@@ -13,6 +13,10 @@ import upside.site.SiteLoader;
 
 public class FederationManager {
 
+    //TODO: Only invalidate a cached federated site when an external site
+    //      that is actually in use have been modified. For now the federated
+    //      sites are invalidates once any external site has changed.
+
     Map<URL, Long> loadTimestamps = new HashMap<URL, Long>();
     Map<String, Site> federatedSites = new HashMap<String, Site>();
 

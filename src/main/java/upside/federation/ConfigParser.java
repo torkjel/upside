@@ -49,7 +49,8 @@ public class ConfigParser extends AbstractParser {
 
     private FederatedSite parseFederatedSite(Element fsElem) {
         String name = fsElem.getAttribute("name");
-        String description = getChildElement(fsElem, "description").getTextContent();
+        Element descElem = getChildElement(fsElem, "description");
+        String description = descElem != null ? descElem.getTextContent() : null;
         Set<FederatedCategory> categories = parseFederatedCategories(fsElem);
         Set<Include> includes = parseIncludes(fsElem);
         return new FederatedSite(name, description, categories, includes);
@@ -64,7 +65,8 @@ public class ConfigParser extends AbstractParser {
 
     private FederatedCategory parseFederatedCategory(Element fcElem) {
         String catName = fcElem.getAttribute("name");
-        String catDescription = getChildElement(fcElem, "description").getTextContent();
+        Element descElem = getChildElement(fcElem, "description");
+        String catDescription = descElem != null ? descElem.getTextContent() : null;
         Set<Include> includes = parseIncludes(fcElem);
         return new FederatedCategory(catName, catDescription, includes);
     }

@@ -36,7 +36,9 @@ public class Federator {
 
         // handle federated-site level includes
         for (Include inc : federatedSite.getIncludes()) {
-            Set<Feature> matches = inc.match(originSiteName, originSite);
+            if (!originSiteName.equals(inc.getSite()))
+                continue;
+            Set<Feature> matches = inc.match(originSite);
             for (Feature f : matches) {
                 addFeature(f, null, inc.getKeepCategories(), features);
                 if (inc.getKeepCategories())
@@ -49,7 +51,9 @@ public class Federator {
             Category cat = new Category(fc.getName(), fc.getName(), fc.getDescription());
             categories.add(cat);
             for (Include inc : fc.getIncludes()) {
-                Set<Feature> matches = inc.match(originSiteName, originSite);
+                if (!originSiteName.equals(inc.getSite()))
+                    continue;
+                Set<Feature> matches = inc.match(originSite);
                 for (Feature f : matches) {
                     addFeature(f, cat.getName(), false, features);
                     if (inc.getKeepCategories())

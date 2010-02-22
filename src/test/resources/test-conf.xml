@@ -1,0 +1,37 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!DOCTYPE upside SYSTEM "upside-conf.dtd">
+
+<upside base-url="http://upside.example.com/">
+
+  <site name="foo" url="http://foo.example.com/site/"/>
+  <site name="bar" url="http://bar.example.com/update-site/"/>
+
+  <federated-site name="main">
+    <description>Main site</description>
+
+    <category name="cat-foo">
+      <description>Foo stuff</description>
+      <include site="foo"/>
+      <include site="foo" category="zooc"/>
+      <include site="foo" feature="zoof"/>
+      <include site="foo" feature="zoofv" version="2.0"/>
+    </category>
+
+    <category name="cat-bar">
+      <include site="bar"/>
+    </category>
+
+    <include site="foo" keep-categories="true"/>
+    <include site="bar" category="barc"/>
+    <include site="foo" feature="foo" version="1.0"/>
+
+  </federated-site>
+
+  <federated-site name="test">
+    <category name="test">
+        <description>Test category</description>
+        <include site="foo"/>
+    </category>
+  </federated-site>
+
+</upside>
