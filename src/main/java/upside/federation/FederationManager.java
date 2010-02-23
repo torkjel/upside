@@ -43,6 +43,15 @@ public class FederationManager {
         return federatedSite;
     }
 
+    public Map<String, Site> getOriginSites(String name) {
+        Map<String, Site> allSites = new HashMap<String, Site>();
+        for (String originSite : config.getOriginSiteNames())
+            allSites.put(
+                originSite,
+                siteLoader.loadSite(config.getOriginSiteUrl(originSite)));
+        return allSites;
+    }
+
     private Site getCachedFederatedSite(String name) {
         if (!federatedSites.containsKey(name))
             return null;

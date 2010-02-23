@@ -75,6 +75,14 @@ public class Site extends AbstractSiteElement {
         return featuresInCat;
     }
 
+    public Set<Feature> getFeaturesWithoutCategory() {
+        Set<Feature> featuresWOC = new HashSet<Feature>();
+        for (Feature f : features)
+            if (f.getCategories().isEmpty())
+                featuresWOC.add(f);
+        return featuresWOC;
+    }
+
     public static URL urlToSiteXml(URL base) {
         if (base.getPath().endsWith("/"))
             try {

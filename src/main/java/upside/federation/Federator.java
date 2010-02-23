@@ -27,7 +27,7 @@ public class Federator {
                 config.getBaseUrl() + fs.getName(),
                 extracted, federated);
         }
-        return federated.withDescription(config.getBaseUrl() + fs.getName(), fs.getDescription());
+        return federated.withDescription(config.getBaseUrl() + fs.getName() + "/", fs.getDescription());
     }
 
     private Site extractFrom(String originSiteName, Site originSite, FederatedSite federatedSite) {
