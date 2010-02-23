@@ -68,7 +68,6 @@ public abstract class AbstractParser {
             if (id == null) return null;
             if (id.contains("/") && !id.endsWith("/"))
                 id = id.substring(id.lastIndexOf("/"));
-            System.out.println(id);
             return new InputSource(getClass().getResourceAsStream(id));
         }
 

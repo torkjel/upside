@@ -9,7 +9,6 @@ public abstract class SiteTestBase {
     protected static final String SITE_RESOURCE = "/test-site.xml";
     protected static final java.net.URL SITE_URL = SiteTestBase.class.getResource(SITE_RESOURCE);
 
-
     private Site site;
     private Site site2;
 

@@ -141,9 +141,6 @@ public class SiteTest extends SiteTestBase {
         Site s2 = new SiteFactoryImpl().create(SITE_URL.openStream());
         Site s3 = new SimpleSiteLoader().loadSite(SITE_URL);
 
-        System.out.println(s);
-        System.out.println(s3);
-
         assertTrue(s.deepEquals(s2));
         assertTrue(s.withAbsoluteUrls(SITE_URL).deepEquals(s3));
     }

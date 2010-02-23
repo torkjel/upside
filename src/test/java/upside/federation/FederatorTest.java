@@ -16,7 +16,6 @@ public class FederatorTest extends FederationTestBase {
     SiteLoader loader = new SiteLoader() {
         @Override public boolean isUpToDate(URL url, long timestamp) { return false; }
         @Override public Site loadSite(URL url) {
-            System.out.println();
             if (url.getPath().contains("site1")) return site1;
             else if (url.getPath().contains("site2")) return site2;
             return null;
