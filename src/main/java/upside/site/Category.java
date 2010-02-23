@@ -1,6 +1,7 @@
 package upside.site;
 
-public class Category {
+public class Category extends AbstractSiteElement {
+
     private String name;
     private String label;
     private String description;
@@ -25,9 +26,7 @@ public class Category {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        return (o instanceof Category)
-            && ((Category)o).getName().equals(getName());
+        return maybeEquals(o) && ((Category)o).getName().equals(getName());
     }
 
     @Override
@@ -42,4 +41,16 @@ public class Category {
             "label:" + label + ", " +
             "description:" + description + "]";
     }
+
+    @Override
+    public boolean deepEquals(SiteElement se) {
+        if (maybeEquals(se)) {
+            Category c = (Category)se;
+            return eq(getName(), c.getName())
+                && eq(getLabel(), c.getLabel())
+                && eq(getDescription(), c.getDescription());
+        }
+        return false;
+    }
+
 }

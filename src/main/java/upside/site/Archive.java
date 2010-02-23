@@ -4,7 +4,7 @@ import java.net.URL;
 
 import upside.utils.Utils;
 
-public class Archive {
+public class Archive extends AbstractSiteElement {
 
     private String path;
     private String url;
@@ -32,17 +32,27 @@ public class Archive {
         return Utils.isAbsolute(url);
     }
 
+    @Override
     public boolean equals(Object o) {
         // eclipse uses the path as a key, so that defines identity.
-        // TODO: it's possible that the same path is used by different plug-ins. This can
+        // XXX: it's possible that the same path is used by different plug-ins. This can
         // only be worked around by taking control over features.xml and re-mapping the
         // plugin paths.
-        if (o == this) return true;
-        return (o instanceof Archive)
-            && ((Archive)o).getPath().equals(getPath());
+        return maybeEquals(o) && ((Archive)o).getPath().equals(getPath());
     }
 
+    @Override
     public int hashCode() {
         return getPath().hashCode();
+    }
+
+    @Override
+    public boolean deepEquals(SiteElement se) {
+        if (maybeEquals(se)) {
+            Archive a = (Archive)se;
+            return eq(getUrl(), a.getUrl())
+                && eq(getPath(), a.getPath());
+        }
+        return false;
     }
 }

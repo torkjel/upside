@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <description url="http://upside.example.com/merged">
+    Merged site
+    </description>
+
+    <feature url="http://feature1a" id="feature1a" version="1.0.0">
+        <category name="cat"/>
+    </feature>
+
+    <feature url="http://feature1b" id="feature1b" version="1.0.0">
+        <category name="mouse"/>
+        <category name="lion"/>
+    </feature>
+
+    <feature url="http://feature2a" id="feature2a" version="1.0.0"/>
+
+    <feature url="http://feature2b" id="feature2b" version="1.0.1" patch="true">
+        <category name="lion"/>
+        <category name="horse"/>
+    </feature>
+
+    <archive path="plugin1" url="http://foo.bar/plugins/foo_1.0.jar"/>
+
+    <category-def name="cat" label="Catcat">
+        <description>Cat's category</description>
+    </category-def>
+
+    <category-def name="mouse" label="Mousecat"/>
+
+    <category-def name="lion" label="lion"/>
+
+    <category-def name="horse" label="Horsecat"/>
+
+
+</site>

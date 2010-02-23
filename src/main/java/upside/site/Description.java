@@ -1,8 +1,6 @@
 package upside.site;
 
-import upside.utils.Utils;
-
-public class Description {
+public class Description extends AbstractSiteElement {
     private String url;
     private String description;
 
@@ -21,17 +19,20 @@ public class Description {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        else if (o instanceof Description) {
-            Description d = (Description)o;
-            return Utils.eq(d.getDescription(), getDescription())
-                && Utils.eq(d.getUrl(), getUrl());
-        }
-        return false;
+        return maybeEquals(o) && deepEquals((SiteElement)o);
     }
 
     @Override
     public int hashCode() {
         return getUrl() != null ? getUrl().hashCode() : super.hashCode();
+    }
+
+    @Override
+    public boolean deepEquals(SiteElement desc) {
+        if (maybeEquals(desc)) {
+            Description d = (Description)desc;
+            return eq(getUrl(), d.getUrl()) && eq(getDescription(), d.getDescription());
+        }
+        return false;
     }
 }

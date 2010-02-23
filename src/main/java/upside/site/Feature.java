@@ -7,7 +7,7 @@ import java.util.Set;
 
 import upside.utils.Utils;
 
-public class Feature {
+public class Feature extends AbstractSiteElement {
     private String url;
     private String id;
     private String version;
@@ -72,9 +72,7 @@ public class Feature {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        return (o instanceof Feature)
-            && ((Feature)o).getUrl().equals(getUrl());
+        return maybeEquals(o) && ((Feature)o).getUrl().equals(getUrl());
     }
 
     @Override
@@ -90,4 +88,19 @@ public class Feature {
             "patch:" + patch + ", " +
             "categories:" + categories + "]";
     }
+
+    @Override
+    public boolean deepEquals(SiteElement se) {
+        if (maybeEquals(se)) {
+            Feature f = (Feature)se;
+            return eq(getUrl(), f.getUrl())
+                && eq(getId(), f.getId())
+                && eq(getCategories(), f.getCategories())
+                && getPatch() == f.getPatch()
+                && eq(getVersion(), f.getVersion());
+        }
+        return false;
+    }
 }
+
+

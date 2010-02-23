@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <description url="site2.html">
+    This is the second site
+    </description>
+
+    <feature url="http://feature2a" id="feature2a" version="1.0.0">
+        <category name="dog"/>
+    </feature>
+
+    <feature url="http://feature2b" id="feature2b" version="1.0.1" patch="true">
+        <category name="horse"/>
+    </feature>
+
+    <category-def name="dog" label="Dogcat"/>
+
+    <category-def name="horse" label="Horsecat"/>
+
+</site>

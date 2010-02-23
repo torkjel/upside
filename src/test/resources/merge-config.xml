@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!DOCTYPE upside SYSTEM "upside-conf.dtd">
+
+<upside base-url="http://upside.example.com/">
+
+  <site name="site1" url="http://foo/site1"/>
+  <site name="site2" url="http://foo/site2"/>
+
+  <federated-site name="merged">
+    <description>Merged site</description>
+
+    <include site="site1" keep-categories="true"/>
+
+    <include site="site2"/>
+
+    <category name="lion">
+        <include site="site1" category="mouse"/>
+        <include site="site2" feature="feature2b" keep-categories="true"/>
+    </category>
+
+  </federated-site>
+
+</upside>

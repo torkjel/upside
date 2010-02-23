@@ -55,7 +55,7 @@ public class Federator {
                     continue;
                 Set<Feature> matches = inc.match(originSite);
                 for (Feature f : matches) {
-                    addFeature(f, cat.getName(), false, features);
+                    addFeature(f, cat.getName(), inc.getKeepCategories(), features);
                     if (inc.getKeepCategories())
                         addCategories(f, categories, originSite);
                 }

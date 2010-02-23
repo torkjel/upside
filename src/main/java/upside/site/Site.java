@@ -11,7 +11,7 @@ import java.util.Set;
 
 import upside.utils.XmlBuilder;
 
-public class Site {
+public class Site extends AbstractSiteElement {
 
     public static final String SITEXML = "site.xml";
 
@@ -172,8 +172,7 @@ public class Site {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        else if (o instanceof Site) {
+        if (maybeEquals(o)) {
             Site s = (Site)o;
             return s.getDescription().equals(getDescription())
                 && s.getArchives().equals(getArchives())
@@ -186,5 +185,33 @@ public class Site {
     @Override
     public int hashCode() {
         return getDescription().hashCode();
+    }
+
+    @Override
+    public boolean deepEquals(SiteElement se) {
+        if (maybeEquals(se)) {
+            Site s = (Site)se;
+            return getDescription().deepEquals(s.getDescription())
+                && deepEquals(getArchives(), s.getArchives())
+                && deepEquals(getCategories(), s.getCategories())
+                && deepEquals(getFeatures(), s.getFeatures());
+        }
+        return false;
+    }
+
+    private <T extends SiteElement> boolean deepEquals(Set<T> set1, Set<T> set2) {
+        if (set1.size() != set2.size())
+            return false;
+        Map<T, T> map = new HashMap<T, T>();
+        for (T t : set1)
+            map.put(t, t);
+        for (T t : set2) {
+            T u = map.get(t);
+            if (u == null)
+                return false;
+            if (!t.deepEquals(u))
+                return false;
+        }
+        return true;
     }
 }
