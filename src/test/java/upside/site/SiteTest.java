@@ -9,8 +9,6 @@ import java.net.URL;
 
 import org.junit.Test;
 
-import upside.utils.Utils;
-
 public class SiteTest extends SiteTestBase {
 
     @Test

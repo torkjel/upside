@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import upside.federation.FederationManager;
+import upside.federation.FederationManagerFactory;
 import upside.site.Site;
 import upside.utils.Exceptions;
 
@@ -39,11 +39,13 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private void doSite(String path, OutputStream out) {
+
         String siteName = getSiteName(path);
-        Site merged = FederationManager.getinstance().getFederatedSite(siteName);
+        Site merged = FederationManagerFactory.getFederationManager().getFederatedSite(siteName);
 
         if (merged == null)
             throw new IllegalArgumentException("Site not found: " + siteName);
+
         try {
             out.write(merged.toString().getBytes("UTF-8"));
         } catch (Exception e) {

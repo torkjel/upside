@@ -1,15 +1,10 @@
 package upside.federation;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
-import upside.site.CachingSiteLoader;
 import upside.site.Site;
-import upside.site.SiteFactoryImpl;
 import upside.site.SiteLoader;
 
 public class FederationManager {
@@ -18,17 +13,22 @@ public class FederationManager {
     //      that is actually in use have been modified. For now the federated
     //      sites are invalidates once any external site has changed.
 
-    Map<URL, Long> loadTimestamps = new HashMap<URL, Long>();
-    Map<String, Site> federatedSites = new HashMap<String, Site>();
+    private Map<URL, Long> loadTimestamps = new HashMap<URL, Long>();
+    private Map<String, Site> federatedSites = new HashMap<String, Site>();
 
     private Config config;
     private Federator federator;
-    private SiteLoader siteLoader;
+    private SL siteLoader;
 
     public FederationManager(Federator federator, SiteLoader siteLoader, Config config) {
         this.federator = federator;
         this.siteLoader = new SL(siteLoader);
         this.config = config;
+    }
+
+    // needed for testing.
+    SiteLoader getSiteLoader() {
+        return siteLoader.sl;
     }
 
     public Site getFederatedSite(String name) {
@@ -59,7 +59,7 @@ public class FederationManager {
 
     private class SL implements SiteLoader {
 
-        private SiteLoader sl;
+        SiteLoader sl;
 
         SL(SiteLoader sl) {
             this.sl = sl;
@@ -76,29 +76,5 @@ public class FederationManager {
             loadTimestamps.put(url, System.currentTimeMillis());
             return s;
         }
-    }
-
-    private static final FederationManager instance;
-
-    static {
-        Class<FederationManager> clazz = FederationManager.class;
-        InputStream in = clazz.getResourceAsStream("/upside.properties");
-        Properties props = new Properties();
-        try {
-            props.load(in);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try { in.close(); } catch (IOException e) { e.printStackTrace(); }
-        }
-        int timeToLive = Integer.valueOf(props.getProperty("upside.cachedsite.timetolive")) * 1000;
-        instance = new FederationManager(
-            new Federator(),
-            new CachingSiteLoader(new SiteFactoryImpl(), timeToLive),
-            new ConfigParser(clazz.getResourceAsStream("/upside-conf.xml")).parse());
-    }
-
-    public static final FederationManager getinstance() {
-        return instance;
     }
 }

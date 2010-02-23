@@ -21,6 +21,10 @@ public class CachingSiteLoader implements SiteLoader {
         this.siteFactory = siteFactory;
     }
 
+    public int getTimeToLive() {
+        return timeToLive;
+    }
+
     @Override
     public Site loadSite(URL url) {
         if (!isCached(url))
