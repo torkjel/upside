@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import upside.site.CachingSiteLoader;
 import upside.site.Site;
+import upside.site.SiteFactoryImpl;
 import upside.site.SiteLoader;
 
 public class FederationManager {
@@ -93,7 +94,7 @@ public class FederationManager {
         int timeToLive = Integer.valueOf(props.getProperty("upside.cachedsite.timetolive")) * 1000;
         instance = new FederationManager(
             new Federator(),
-            new CachingSiteLoader(timeToLive),
+            new CachingSiteLoader(new SiteFactoryImpl(), timeToLive),
             new ConfigParser(clazz.getResourceAsStream("/upside-conf.xml")).parse());
     }
 

@@ -3,10 +3,13 @@ package upside.site;
 import static junit.framework.TestCase.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.junit.Test;
+
+import upside.utils.Utils;
 
 public class SiteTest extends SiteTestBase {
 
@@ -132,5 +135,18 @@ public class SiteTest extends SiteTestBase {
         Site s = loadSite();
         Site roundtrip = Site.load(new ByteArrayInputStream(s.toString().getBytes()));
         assertEquals(s, roundtrip);
+    }
+
+    @Test
+    public void testSiteLoader() throws IOException {
+        Site s = loadSite();
+        Site s2 = new SiteFactoryImpl().create(SITE_URL.openStream());
+        Site s3 = new SimpleSiteLoader().loadSite(SITE_URL);
+
+        System.out.println(s);
+        System.out.println(s3);
+
+        assertTrue(s.deepEquals(s2));
+        assertTrue(s.withAbsoluteUrls(SITE_URL).deepEquals(s3));
     }
 }

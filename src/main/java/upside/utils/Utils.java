@@ -1,5 +1,8 @@
 package upside.utils;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,6 +20,14 @@ public final class Utils {
     public static URL asUrl(String urlSpec) {
         try {
             return new URL(urlSpec);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static URL asUrl(File f) {
+        try {
+            return f.toURI().toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -82,6 +93,27 @@ public final class Utils {
 
     public static boolean eq(Object o1, Object o2) {
         return (o1 != null && o1.equals(o2)) || (o1 == null && o2 == null);
+    }
+
+    public static File saveAsTempFile(InputStream is) {
+        File f;
+        try {
+            f = File.createTempFile("upside", "xml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        saveFile(f, is);
+        return f;
+    }
+
+    public static void saveFile(File file, InputStream is) {
+        OutputStream os;
+        try {
+            os = new BufferedOutputStream(new FileOutputStream(file));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        pipe(is, os);
     }
 
 }

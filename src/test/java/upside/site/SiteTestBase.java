@@ -6,11 +6,15 @@ public abstract class SiteTestBase {
 
     protected static final String URL = "http://foo.bar/";
 
+    protected static final String SITE_RESOURCE = "/test-site.xml";
+    protected static final java.net.URL SITE_URL = SiteTestBase.class.getResource(SITE_RESOURCE);
+
+
     private Site site;
     private Site site2;
 
     protected synchronized Site loadSite() {
-        return site == null ? site = loadSite("/test-site.xml") : site;
+        return site == null ? site = loadSite(SITE_RESOURCE) : site;
     }
 
     protected Site loadOtherSite() {

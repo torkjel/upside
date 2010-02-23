@@ -14,9 +14,11 @@ public class CachingSiteLoader implements SiteLoader {
     private Map<URL, SiteCache> cache = new HashMap<URL, SiteCache>();
 
     private int timeToLive;
+    private SiteFactory siteFactory;
 
-    public CachingSiteLoader(int timeToLive) {
+    public CachingSiteLoader(SiteFactory siteFactory, int timeToLive) {
         this.timeToLive = timeToLive;
+        this.siteFactory = siteFactory;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class CachingSiteLoader implements SiteLoader {
         byte[] data = baos.toByteArray();
         String hash = Utils.hash(data);
         System.out.println("Loading site '" + url + "'");
-        Site s = Site.load(new ByteArrayInputStream(data)).withAbsoluteUrls(url);
+        Site s = siteFactory.create(new ByteArrayInputStream(data)).withAbsoluteUrls(url);
 
         SiteCache sc = cache.get(url);
         cache.put(
@@ -57,7 +59,6 @@ public class CachingSiteLoader implements SiteLoader {
     }
 
     private Site get(URL url) {
-        System.out.println("Using cached site '" + url + "'");
         return cache.get(url).site;
     }
 
