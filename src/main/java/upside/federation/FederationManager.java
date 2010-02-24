@@ -31,6 +31,10 @@ public class FederationManager {
         return siteLoader.sl;
     }
 
+    public Config getConfig() {
+        return config;
+    }
+
     public Site getFederatedSite(String name) {
         System.out.println("Federating site '" + name + "'");
         Site federatedSite = getCachedFederatedSite(name);

@@ -27,6 +27,10 @@ public class Config {
         return originSties.get(name);
     }
 
+    public Set<FederatedSite> getFederatedSites() {
+        return new HashSet<FederatedSite>(federatedSites.values());
+    }
+
     public FederatedSite getFederatedSite(String name) {
         return federatedSites.get(name);
     }
