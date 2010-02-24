@@ -4,7 +4,7 @@ import upside.site.Site;
 
 class Path {
 
-    private static final String INDEX = "index.hml";
+    private static final String INDEX = "index.html";
     private static final String APP_NAME = "upside";
 
     private String[] path;
