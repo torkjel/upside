@@ -1,13 +1,11 @@
 package upside.federation;
 
-import java.net.URL;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import upside.site.CachingSiteLoader;
 import upside.site.Site;
-import upside.site.SiteLoader;
+import upside.site.TestSiteLoader;
 import static junit.framework.TestCase.*;
 
 public class FederationManagerTest {
@@ -47,28 +45,5 @@ public class FederationManagerTest {
         assertTrue(federated.deepEquals(expected));
         assertEquals(expectedLoads, tsl.sitesLoaded);
         return federated;
-    }
-
-    class TestSiteLoader implements SiteLoader {
-
-        int sitesLoaded = 0;
-        boolean isUpToDate = false;
-
-        @Override
-        public boolean isUpToDate(URL url, long timestamp) {
-            return isUpToDate;
-        }
-
-        @Override
-        public Site loadSite(URL url) {
-            sitesLoaded++;
-            if (url.toString().contains("site1"))
-                return Site.load(getClass().getResource("/site-to-merge-1.xml"));
-            else if (url.toString().contains("site2"))
-                return Site.load(getClass().getResource("/site-to-merge-2.xml"));
-            else
-                throw new IllegalArgumentException(url.toString());
-        }
-
     }
 }

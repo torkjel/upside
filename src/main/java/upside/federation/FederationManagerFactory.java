@@ -12,13 +12,13 @@ public class FederationManagerFactory {
 
     private static FederationManager instance;
 
-    static synchronized FederationManager create(
+    public static FederationManager create(
             String propertiesResource,
             String configResource) {
         return create(propertiesResource, configResource, null);
     }
 
-    static synchronized FederationManager create(
+    public static FederationManager create(
             String propertiesResource,
             String configResource,
             SiteLoader siteLoader) {
@@ -28,12 +28,10 @@ public class FederationManagerFactory {
             siteLoader = new CachingSiteLoader(new SiteFactoryImpl(), timeToLive);
         }
 
-        Class<FederationManager> clazz = FederationManager.class;
-
         return new FederationManager(
             new Federator(),
             siteLoader,
-            new ConfigParser(clazz.getResourceAsStream(configResource)).parse());
+            new ConfigParser(FederationManager.class.getResourceAsStream(configResource)).parse());
     }
 
     public static synchronized FederationManager getFederationManager() {

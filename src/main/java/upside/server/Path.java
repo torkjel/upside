@@ -51,11 +51,13 @@ class Path {
                     isSiteIndex = true;
                     return;
                 } else if (n == path.length - 3) {
-                    siteName = path[n + 1];
                     if (path[n + 2].equals(Site.SITEXML))
                         isSite = true;
                     else if (path[n + 2].equals(INDEX))
                         isSiteIndex = true;
+                    else
+                        continue;
+                    siteName = path[n + 1];
                 }
             }
     }

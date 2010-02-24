@@ -30,7 +30,7 @@ public class ToplevelIndexHandler extends PageHandler {
         Config config = fm().getConfig();
         for (FederatedSite fs : config.getFederatedSites()) {
             html.li(
-                "<a href=\"" + config.getBaseUrl() + fs.getName() + "\">" +
+                "<a href=\"" + config.getBaseUrl() + fs.getName() + "/\">" +
                 fs.getName() + "</a><br>" +
                 "<i>" + fs.getDescription() + "</i>");
         }

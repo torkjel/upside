@@ -10,6 +10,7 @@ import upside.utils.Exceptions;
 abstract class PageHandler {
 
     private OutputStream out;
+    private FederationManager federationManager;
 
     protected PageHandler(OutputStream out) {
         this.out = out;
@@ -27,7 +28,13 @@ abstract class PageHandler {
     }
 
     protected FederationManager fm() {
-        return FederationManagerFactory.getFederationManager();
+        return federationManager != null
+            ? federationManager
+            : FederationManagerFactory.getFederationManager();
+    }
+
+    protected void setFederationManager(FederationManager fm) {
+        this.federationManager = fm;
     }
 
     protected void write(String data) {
